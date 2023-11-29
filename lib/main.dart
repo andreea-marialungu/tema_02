@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
 }
-//comentariu
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Guess my number'),
-        );
+    );
   }
 }
 
@@ -31,44 +31,39 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-
 class _MyHomePageState extends State<MyHomePage> {
-  bool error=false;
- int randomValue=  Random().nextInt(101);
+  bool error = false;
+  int randomValue = Random().nextInt(101);
 
-
- late int insertedValue;
- late String errorMessage;
-  String messageValue='';
+  late int insertedValue;
+  late String errorMessage;
+  String messageValue = '';
 
   void displayMessage() {
     setState(() {
-    if (randomValue == insertedValue){
-      messageValue="You tried $insertedValue. You guessed right";
-      openDialog();
-    }else if (insertedValue<randomValue){
-      messageValue="You tried $insertedValue. Try higher";
-    } else if (insertedValue>randomValue){
-      messageValue="You tried $insertedValue. Try lower";
-    }
+      if (randomValue == insertedValue) {
+        messageValue = 'You tried $insertedValue. You guessed right';
+        openDialog();
+      } else if (insertedValue < randomValue) {
+        messageValue = 'You tried $insertedValue. Try higher';
+      } else if (insertedValue > randomValue) {
+        messageValue = 'You tried $insertedValue. Try lower';
+      }
     });
   }
 
-  void close(){
+  void close() {
     Navigator.of(context).pop();
   }
 
-  Future openDialog()=> showDialog(
+  Future<dynamic> openDialog() async => showDialog(
       context: context,
-      builder: (context)=>AlertDialog(
-        title: Text('You guessed right. Your value was:$insertedValue'),
-        content: ElevatedButton(onPressed: close, child: const Text('Close'))
-  ));
-
+      builder: (BuildContext context) => AlertDialog(
+          title: Text('You guessed right. Your value was:$insertedValue'),
+          content: ElevatedButton(onPressed: close, child: const Text('Close'))));
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
@@ -78,35 +73,38 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text( '$randomValue', style: Theme.of(context).textTheme.headlineMedium),
+            Text('$randomValue', style: Theme.of(context).textTheme.headlineMedium),
             const Text(
-              'I am thinking of a number between 1 and 100.', style: TextStyle(fontSize: 18),
+              'I am thinking of a number between 1 and 100.',
+              style: TextStyle(fontSize: 18),
             ),
             const Text(
               'It is your turn to guess my number!',
             ),
-            Text( messageValue, style: TextStyle(fontSize: 20)),
+            Text(messageValue, style: const TextStyle(fontSize: 20)),
             Card(
               color: Colors.white,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                   Text("Try a number!", style: Theme.of(context).textTheme.headlineMedium,),
+                  Text(
+                    'Try a number!',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                   TextField(
-                     keyboardType: TextInputType.number,
-                     // decoration: InputDecoration(
-                     //   errorText: errorMessage,
-                     // ),
-                     onChanged: (String value){
-                       setState(() {
-                         insertedValue=int.parse(value);
-                         if (insertedValue>=101){
-                           errorMessage="Too big";
-                         }
-                       });
-                     },
-                   ),
-
+                    keyboardType: TextInputType.number,
+                    // decoration: InputDecoration(
+                    //   errorText: errorMessage,
+                    // ),
+                    onChanged: (String value) {
+                      setState(() {
+                        insertedValue = int.parse(value);
+                        if (insertedValue >= 101) {
+                          errorMessage = 'Too big';
+                        }
+                      });
+                    },
+                  ),
                   ElevatedButton(onPressed: displayMessage, child: const Text('Guess'))
                 ],
               ),
